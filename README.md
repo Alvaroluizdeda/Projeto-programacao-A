@@ -6,5 +6,5 @@ Projeto  desenvolvido para a disciplina de programação A - UFS
 -Carlos Gustavo Moreira Fernandes Vieira
 -João Vítor Dias Rodrigues
 
-## Objetivo
+### Objetivo
 Desenvolver um editor gráfico em Python utilizando a biblioteca Tkinter.
