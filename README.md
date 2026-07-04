@@ -1,10 +1,16 @@
 # Projeto-programacao-A
 Projeto  desenvolvido para a disciplina de programação A - UFS
+Tipo de projeto: Interface gráfica utilizando Tkinter
 
 ## Integrantes
 -Álvaro Luiz Déda Corrêa Fernandes
 -Carlos Gustavo Moreira Fernandes Vieira
 -João Vítor Dias Rodrigues
 
-### Objetivo
-Desenvolver um editor gráfico em Python utilizando a biblioteca Tkinter.
+### Objetivo 1
+*Desenhar Retângulos
+*Desenhar ovais
+*Desenhar circulos
+*Desenhos individuais terem bordas com cor
+*Desenhos individuais terem cor de preenchimento
+
