@@ -8,9 +8,10 @@ Tipo de projeto: Interface gráfica utilizando Tkinter
 -João Vítor Dias Rodrigues
 
 ### Objetivo 1
-*Desenhar Retângulos
-*Desenhar ovais
-*Desenhar circulos
-*Desenhos individuais terem bordas com cor
-*Desenhos individuais terem cor de preenchimento
+*Desenhar Retângulos(feito)
+*Desenhar ovais(feito)
+*Desenhar circulos(feito)
+*Generalizar mais o código(Em andamento...)
+*Desenhos individuais terem bordas com cor(Não feito)
+*Desenhos individuais terem cor de preenchimento(Não feito)
 
