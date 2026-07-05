@@ -6,6 +6,7 @@ Projeto desenvolvido para a disciplina de Programação A - UFS
 
 ## Integrantes
 
+<<<<<<< HEAD
 - Álvaro Luiz Déda Corrêa Fernandes
 - Carlos Gustavo Moreira Fernandes Vieira
 - João Vítor Dias Rodrigues
