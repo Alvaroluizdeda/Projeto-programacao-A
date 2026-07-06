@@ -3,24 +3,29 @@ from tkinter import ttk
 
 # Quando mouse é pressionado
 def iniciar_figura_nova(event): 
-    global figura_nova
-    if tipo_figura_var.get() == 'Linha':
-        figura_nova = ("linha", (event.x, event.y, event.x, event.y))
-    elif tipo_figura_var.get() == "Rabisco":
-        figura_nova = ("rabisco", [(event.x, event.y)])
-    elif tipo_figura_var.get() == "Retângulo":
-        figura_nova = ("retangulo",(event.x,event.y,event.x,event.y))
-    elif tipo_figura_var.get() == "Oval":
-        figura_nova = ("oval",(event.x,event.y,event.x,event.y))
-    else:
-        figura_nova = ("circulo", (event.x,event.y,event.x,event.y))
+    tipos = {                  #generaliza os tipos que possuem a mesma lógica
+        "Linha": "linha",      
+        "Retângulo": "retangulo",
+        "Oval": "oval",
+        "Círculo": "circulo"
+    }      
 
+    global figura_nova                         
+
+    tipo = tipo_figura_var.get()
+
+    if tipo == "Rabisco":
+        figura_nova = ("rabisco",[(event.x,event.y)])
+
+    else:
+        figura_nova = (tipos[tipo], (event.x,event.y,event.x,event.y))
 
 # Quando mouse é movido com o botão pressionado
 def atualizar_figura_nova(event):
     global figura_nova
     if figura_nova[0] == "rabisco":
         figura_nova[1].append((event.x, event.y))
+
     else : 
         tipo = figura_nova[0] #n fica mais fixo em linha, depende da figura dada na tupla agora.
         figura_nova = (tipo, (figura_nova[1][0], figura_nova[1][1], event.x, event.y))
@@ -33,39 +38,48 @@ def incluir_figura_nova(event):
         figuras.append(figura_nova) 
     desenhar_figuras()
 
-def desenhar_figuras():
+def desenhar_figuras():  # generaliza os casos com lógica repetida
+    desenhos = {
+        "linha": canvas.create_line,
+        "retangulo": canvas.create_rectangle,
+        "oval": canvas.create_oval
+    }
+    
     canvas.delete("all")
+
     for fig, values in figuras:
-        if fig == "linha":
-            canvas.create_line(values[0], values[1], values[2], values[3])
-        elif fig == "rabisco":
+        if fig == "rabisco":
             canvas.create_line(values)
-        elif fig == "retangulo":
-            canvas.create_rectangle(values[0],values[1],values[2],values[3])
-        elif fig == "oval":
-            canvas.create_oval(values[0],values[1],values[2],values[3])
-        else:
+
+        elif fig == "circulo":
             novo_values = desenhar_circulo(values)
             canvas.create_oval(novo_values[0],novo_values[1],novo_values[2],novo_values[3])
-            
 
-def desenhar_figura_nova():
+        else:
+            desenhos[fig](values[0],values[1],values[2],values[3])
+
+def desenhar_figura_nova(): #mesma lógica dos dicts anteriores, organização e generalização.
+    desenhos = {
+        "linha": canvas.create_line,
+        "retangulo": canvas.create_rectangle,
+        "oval": canvas.create_oval
+    }
+    
     fig, values = figura_nova
-    if fig == "linha":
-        canvas.create_line(values[0], values[1], values[2], values[3], dash=(4, 2))
-    elif fig == "rabisco":
-        canvas.create_line(values, dash=(4, 2))
-    elif fig == "retangulo":
-        canvas.create_rectangle(values[0],values[1],values[2],values[3], dash = (4,2))
-    elif fig == "oval":
-         canvas.create_oval(values[0],values[1],values[2],values[3], dash = (4,2))
-    else:
+     
+    if fig == "rabisco":
+        canvas.create_line(values, dash = (4,2))
+
+    elif fig == "circulo":
         novo_values = desenhar_circulo(values)
         canvas.create_oval(novo_values[0],novo_values[1],novo_values[2],novo_values[3], dash = (4,2))
+
+    else:
+        desenhos[fig](values[0],values[1],values[2],values[3], dash = (4,2))
+
       
     
-
-def desenhar_circulo(values):
+def desenhar_circulo(values):  #caso especial do oval
     x1 = values[0]
     y1 = values[1]
     x2 = values[2]
@@ -75,29 +89,26 @@ def desenhar_circulo(values):
 
     if x2 < x1:
         x2 = x1 - lado
+
     else:
         x2 = x1 + lado
     
+
     if y2 < y1:
         y2 = y1 -lado
+
     else:
         y2 = y1 + lado
     return (x1,y1,x2,y2)
     
 
-def incompleta(figura):
+def incompleta(figura):  #generalizei novamente, apenas deixando rabisco como caso especial.
     fig, values = figura
-    if fig == "linha":
-        return (values[0], values[1]) == (values[2], values[3])
-    elif fig == "rabisco":
+    if fig == "rabisco":
         return len(values) <= 1
-    elif fig == "retangulo":
-         return (values[0], values[1]) == (values[2], values[3])
-    elif fig == "oval":
-        return(values[0], values[1]) == (values[2],values[3])
+    
     else:
-        return (values[0], values[1]) == (values[2],values[3])
-
+        return (values[0],values[1]) == (values[2],values[3])
 
 
 
