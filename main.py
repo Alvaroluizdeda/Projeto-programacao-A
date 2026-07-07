@@ -38,7 +38,7 @@ def incluir_figura_nova(event):
         figuras.append(figura_nova) 
     desenhar_figuras()
 
-def desenhar_figuras():
+def desenhar_figuras(): # generaliza os casos com lógica repetida
     desenhos = {
         "linha": canvas.create_line,
         "retangulo": canvas.create_rectangle,
