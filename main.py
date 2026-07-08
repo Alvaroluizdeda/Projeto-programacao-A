@@ -13,12 +13,13 @@ def iniciar_figura_nova(event):
     global figura_nova                         
 
     tipo = tipo_figura_var.get()
+    cor = cores[cor_var.get()]
 
     if tipo == "Rabisco":
-        figura_nova = ("rabisco",[(event.x,event.y,)], cores[cor_var.get()]) #rabisco é o único que precisa de uma lista de pontos, por isso o caso especial.
+        figura_nova = ("rabisco",[(event.x,event.y,)], cor) #rabisco é o único que precisa de uma lista de pontos, por isso o caso especial.
 
     else:
-        figura_nova = (tipos[tipo], (event.x,event.y,event.x,event.y), cores[cor_var.get()])
+        figura_nova = (tipos[tipo], (event.x,event.y,event.x,event.y), cor)
 
 # Quando mouse é movido com o botão pressionado
 def atualizar_figura_nova(event):
@@ -27,8 +28,11 @@ def atualizar_figura_nova(event):
         figura_nova[1].append((event.x, event.y))
 
     else : 
-        tipo = figura_nova[0] #n fica mais fixo em linha, depende da figura dada na tupla agora.
-        figura_nova = (tipo, (figura_nova[1][0], figura_nova[1][1], event.x, event.y), cores[cor_var.get()])
+        tipo = figura_nova[0]  #n fica mais fixo em linha, depende da figura dada na tupla agora.
+        cor = figura_nova[2]
+
+        figura_nova = (tipo, (figura_nova[1][0], figura_nova[1][1], event.x, event.y), cor)
+
     desenhar_figuras()
     desenhar_figura_nova()
 
@@ -50,19 +54,22 @@ def desenhar_figuras(): # generaliza os casos com lógica repetida
     for fig, values, cor in figuras:
 
         if fig == "rabisco":
-            canvas.create_line(values, fill=cor)
+            canvas.create_line(values, fill = "black") 
+        
+        elif fig == "linha":
+            canvas.create_line(*values, fill = "black") #linha não pode ficar "sem preenchimento", igual à rabisco
 
         elif fig == "circulo":
             novo_values = desenhar_circulo(values)
             canvas.create_oval(
                 *novo_values,
-                outline=cor
+                fill=cor
             )
 
         else:
             desenhos[fig](
                 *values,
-                outline=cor
+                fill=cor
             )
 
 def desenhar_figura_nova(): #mesma lógica dos dicts anteriores, organização e generalização.
@@ -75,17 +82,17 @@ def desenhar_figura_nova(): #mesma lógica dos dicts anteriores, organização e
     fig, values, cor = figura_nova
      
     if fig == "rabisco":
-        canvas.create_line(values, dash = (4,2), fill = cor)
+        canvas.create_line(values, dash = (4,2), fill = "black")
+    
+    elif fig == "linha":
+        canvas.create_line(values, dash = (4,2), fill = "black")
 
     elif fig == "circulo":
         novo_values = desenhar_circulo(values)
-        canvas.create_oval(novo_values[0],novo_values[1],novo_values[2],novo_values[3], dash = (4,2), outline = cor)
-
-    elif fig == "oval":
-        canvas.create_oval(values[0],values[1],values[2],values[3], dash = (4,2), outline = cor)
+        canvas.create_oval(*novo_values, dash = (4,2))
 
     else:
-        desenhos[fig](values[0],values[1],values[2],values[3], dash = (4,2), outline = cor)
+        desenhos[fig](*values, dash = (4,2), fill=cor)
 
       
     
@@ -123,36 +130,6 @@ def incompleta(figura):  #generalizei novamente, apenas deixando rabisco como ca
     
 
 
-def iniciar_figura_nova(event):
-
-    tipos = {
-        "Linha": "linha",
-        "Retângulo": "retangulo",
-        "Oval": "oval",
-        "Círculo": "circulo"
-    }
-
-    global figura_nova
-
-    tipo = tipo_figura_var.get()
-    cor = cores[cor_var.get()]
-
-    if tipo == "Rabisco":
-        figura_nova = ("rabisco", [(event.x, event.y)], cor)
-    else:
-        figura_nova = (
-            tipos[tipo],
-            (event.x, event.y, event.x, event.y),
-            cor
-        )
-
-
-
-
-
-
-
-
 #******* MAIN *******#
 
 figuras = []       # Todas as figuras desenhadas
@@ -163,6 +140,7 @@ frame = Frame(root)
 
 
 cores = {
+    "Sem preenchimento": "",
     "Preto": "black",
     "Vermelho": "red",
     "Azul": "blue",
@@ -177,22 +155,20 @@ cores = {
 paddings = {'padx': 5, 'pady': 5} 
 
 cor_var = StringVar(root)
-cor_var.set("Preto")
+cor_var.set("Sem preenchimento")
 
+label_cor = ttk.Label(frame, text = "Cor de preenchimento:")
+label_cor.grid(column = 2, row = 0, sticky = W, **paddings)
 
 option_menu_cor = ttk.OptionMenu(
     frame,
     cor_var,
-    "Preto",
+    cor_var.get(),
     *cores.keys()
 )
 
 option_menu_cor.grid(column=3, row=0, sticky=W, **paddings)
 
-
-
-
-cor = cores[cor_var.get()]
 
 
 # label
@@ -207,7 +183,7 @@ option_menu.grid(column=1, row=0, sticky=W, **paddings)
 
 # Área de desenho
 canvas = Canvas(frame, bg='white', width=600, height=600)
-canvas.grid(column=0, row=1, columnspan=2, sticky=W, **paddings)
+canvas.grid(column=0, row=1, columnspan=4, sticky=NSEW, **paddings)
 
 frame.pack()
 
