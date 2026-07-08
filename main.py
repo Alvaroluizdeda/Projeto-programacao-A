@@ -63,13 +63,15 @@ def desenhar_figuras(): # generaliza os casos com lógica repetida
             novo_values = desenhar_circulo(values)
             canvas.create_oval(
                 *novo_values,
-                fill=cor
+                fill=cor,
+                outline="black"  # Adiciona borda preta ao círculo finalizado
             )
 
         else:
             desenhos[fig](
                 *values,
-                fill=cor
+                fill=cor,
+                outline="black"  # Adiciona borda preta ao retângulo/oval finalizado
             )
 
 def desenhar_figura_nova(): #mesma lógica dos dicts anteriores, organização e generalização.
@@ -89,10 +91,10 @@ def desenhar_figura_nova(): #mesma lógica dos dicts anteriores, organização e
 
     elif fig == "circulo":
         novo_values = desenhar_circulo(values)
-        canvas.create_oval(*novo_values, dash = (4,2))
+        canvas.create_oval(*novo_values, dash = (4,2), outline="black") # Borda pontilhada preta para o rascunho
 
     else:
-        desenhos[fig](*values, dash = (4,2), fill=cor)
+        desenhos[fig](*values, dash = (4,2), fill=cor, outline="black") # Borda pontilhada preta para o rascunho
 
       
     
@@ -132,7 +134,7 @@ def incompleta(figura):  #generalizei novamente, apenas deixando rabisco como ca
 
 #******* MAIN *******#
 
-figuras = []       # Todas as figuras desenhadas
+figuras = []       All as figuras desenhadas
 figura_nova = None # Figura que está sendo desenhada, mas ainda não foi incluída em figuras
 
 root = Tk()
@@ -191,5 +193,7 @@ frame.pack()
 canvas.bind('<ButtonPress-1>', iniciar_figura_nova)
 canvas.bind('<B1-Motion>', atualizar_figura_nova)
 canvas.bind('<ButtonRelease-1>', incluir_figura_nova)
+
+root.mainloop()r_figura_nova)
 
 root.mainloop()
