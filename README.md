@@ -16,5 +16,5 @@ Projeto desenvolvido para a disciplina de Programação A - UFS
 - ✅ Desenhar ovais
 - ✅ Desenhar círculos
 - ✅ Generalizar mais o código
-- ❌ Desenhos individuais terem bordas com cor
-- ❌ Desenhos individuais terem cor de preenchimento
+- ✅ Desenhos individuais terem bordas com cor
+- ✅ Desenhos individuais terem cor de preenchimento
