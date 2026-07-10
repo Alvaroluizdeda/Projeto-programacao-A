@@ -125,8 +125,6 @@ def incompleta(figura):  #generalizei novamente, apenas deixando rabisco como ca
         return (values[0],values[1]) == (values[2],values[3])
     
 
-
-              
 #/*/*/*/*/*/*/ MAIN /*/*/*/*/*/*/
 
 figuras = []       # Todas as figuras desenhadas
@@ -160,8 +158,8 @@ espessuras = {
 paddings = {'padx': 5, 'pady': 5} 
 
 
-frame_controles = ttk.Frame(frame)#criei outro frame pra separar os textos do canvas, mas não é necessário, só pra organização visual mesmo.
-frame_controles.grid(column=0, row=0, sticky=N)
+frame2 = ttk.Frame(frame)#criei outro frame pra separar os textos do canvas, mas não é necessário, só pra organização visual mesmo.
+frame2.grid(column=0, row=0, sticky=N)
 
 #option menu & Label das espessuras e das cores das espessuras
 cor_borda_var = StringVar(root)
@@ -171,15 +169,15 @@ largura_borda_var = StringVar(root)
 largura_borda_var.set("2")
 
 #cor da borda
-label_cor_borda = ttk.Label(frame_controles, text="Cor da borda:")
+label_cor_borda = ttk.Label(frame2, text="Cor da borda:")
 label_cor_borda.grid(column=0, row=4, sticky=W, **paddings)
-option_menu_cor_borda = ttk.OptionMenu( frame_controles,cor_borda_var, cor_borda_var.get(), *cores.keys())
+option_menu_cor_borda = ttk.OptionMenu( frame2,cor_borda_var, cor_borda_var.get(), *cores.keys())
 option_menu_cor_borda.grid(column=0, row=5, sticky=W, **paddings)
 
 #borda
-label_largura_borda = ttk.Label(frame_controles, text="Grossura da borda:")
+label_largura_borda = ttk.Label(frame2, text="Grossura da borda:")
 label_largura_borda.grid(column=0, row=6, sticky=W, **paddings)
-option_menu_largura = ttk.OptionMenu(frame_controles,largura_borda_var, largura_borda_var.get(),*espessuras.keys())
+option_menu_largura = ttk.OptionMenu(frame2,largura_borda_var, largura_borda_var.get(),*espessuras.keys())
 option_menu_largura.grid(column=0, row=7, sticky=W, **paddings)
 
 
@@ -187,19 +185,19 @@ option_menu_largura.grid(column=0, row=7, sticky=W, **paddings)
 cor_var = StringVar(root)
 cor_var.set("Sem preenchimento")
 
-option_menu_cor = ttk.OptionMenu( frame_controles,cor_var, cor_var.get(), *cores.keys())
+option_menu_cor = ttk.OptionMenu( frame2,cor_var, cor_var.get(), *cores.keys())
 option_menu_cor.grid(column=0, row=3, sticky=W, **paddings)
 
-label_cor = ttk.Label(frame_controles, text = "Cor de preenchimento:")
+label_cor = ttk.Label(frame2, text = "Cor de preenchimento:")
 label_cor.grid(column = 0, row=2, sticky = W, **paddings)
 
 
 # option menu  & Label das figuras
 tipo_figura_var = StringVar(root) # Guarda o tipo de figura selecionado no option menu (linha ou rabisco)
-option_menu = ttk.OptionMenu(frame_controles, tipo_figura_var,
+option_menu = ttk.OptionMenu(frame2, tipo_figura_var,
                             'Linha', 'Linha', 'Rabisco','Retângulo','Oval','Círculo')
 option_menu.grid( column=0, row=1, sticky=W, **paddings)
-label = ttk.Label(frame_controles,  text='Tipo da figura:')
+label = ttk.Label(frame2,  text='Tipo da figura:')
 label.grid(column=0, row=0, sticky=W, **paddings)
 
 # Área de desenho
