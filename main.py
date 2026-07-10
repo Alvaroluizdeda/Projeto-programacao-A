@@ -124,7 +124,10 @@ def incompleta(figura):  #generalizei novamente, apenas deixando rabisco como ca
     else:
         return (values[0],values[1]) == (values[2],values[3])
     
-
+def desfazer():
+    if len(figuras) > 0:
+        figuras.pop()  # remove a última figura adicionada na lista [figuras]
+        desenhar_figuras()
 #/*/*/*/*/*/*/ MAIN /*/*/*/*/*/*/
 
 figuras = []       # Todas as figuras desenhadas
@@ -160,6 +163,11 @@ paddings = {'padx': 5, 'pady': 5}
 
 frame2 = ttk.Frame(frame)#criei outro frame pra separar os textos do canvas, mas não é necessário, só pra organização visual mesmo.
 frame2.grid(column=0, row=0, sticky=N)
+
+#um botão para desfazer a última figura desenhada, que chama a função desfazer quando clica
+botao_desfazer = ttk.Button(frame2, text="Desfazer",command=desfazer)
+
+botao_desfazer.grid(column=0, row=8, sticky=W, **paddings)
 
 #option menu & Label das espessuras e das cores das espessuras
 cor_borda_var = StringVar(root)
