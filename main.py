@@ -16,6 +16,7 @@ def iniciar_figura_nova(event):
     cor = cores[cor_var.get()]
     cor_borda = cores[cor_borda_var.get()]
     largura = espessuras[largura_borda_var.get()]
+
     if tipo == "Rabisco":
         figura_nova = ("rabisco",[(event.x,event.y,)], cor, cor_borda, largura) #rabisco é o único que precisa de uma lista de pontos, por isso o caso especial.
 
@@ -56,21 +57,20 @@ def desenhar_figuras(): # generaliza os casos com lógica repetida
     for fig, values, cor, cor_borda, largura in figuras:
 
         if fig == "rabisco":
-            canvas.create_line(*values, fill = cor, width = largura) #rabisco não pode ficar "sem preenchimento", igual à linha
+            canvas.create_line(*values, fill = cor,width= largura) #rabisco não pode ficar "sem preenchimento", igual à linha
         
         elif fig == "linha":
-            canvas.create_line(*values, fill = cor, width = largura) #linha não pode ficar "sem preenchimento", igual à rabisco
+            canvas.create_line(*values, fill = cor, width= largura) #linha não pode ficar "sem preenchimento", igual à rabisco
 
         elif fig == "circulo":
             novo_values = desenhar_circulo(values)
-            canvas.create_oval(*novo_values, fill=cor, outline=cor_borda, width=largura)
+            canvas.create_oval(*novo_values, fill=cor, outline= cor_borda, width=largura)
 
         else:
-            desenhos[fig](*values,fill=cor,outline=cor_borda,width=largura)
+            desenhos[fig](*values,fill=cor,outline = cor_borda,width=largura)
 
 def desenhar_figura_nova(): #mesma lógica dos dicts anteriores, organização e generalização.
     desenhos = {
-        "linha": canvas.create_line,
         "retangulo": canvas.create_rectangle,
         "oval": canvas.create_oval
     }
@@ -78,17 +78,17 @@ def desenhar_figura_nova(): #mesma lógica dos dicts anteriores, organização e
     fig, values, cor, cor_borda, largura = figura_nova
      
     if fig == "rabisco":
-        canvas.create_line(values, dash = (4,2), fill = cor,width=largura)
+        canvas.create_line(*values, dash = (4,2), fill = cor, width= largura)
     
     elif fig == "linha":
-        canvas.create_line(values, dash = (4,2), fill = cor,width=largura)
+        canvas.create_line(*values, dash = (4,2), fill = cor, width= largura)
 
     elif fig == "circulo":
         novo_values = desenhar_circulo(values)
-        canvas.create_oval(*novo_values, dash = (4,2), fill = cor)
+        canvas.create_oval(*novo_values, dash = (4,2), fill = cor, outline = cor_borda, width= largura)
 
     else:
-        desenhos[fig](*values, dash = (4,2), fill=cor)
+        desenhos[fig](*values, dash = (4,2), fill=cor, outline = cor_borda, width = largura)
 
       
     
@@ -116,7 +116,9 @@ def desenhar_circulo(values):  #caso especial do oval
     
 
 def incompleta(figura):  #generalizei novamente, apenas deixando rabisco como caso especial.
-    
+    if figura is None:
+        return True
+
     fig, values, *_ = figura
     if fig == "rabisco":
         return len(values) <= 1
@@ -124,10 +126,12 @@ def incompleta(figura):  #generalizei novamente, apenas deixando rabisco como ca
     else:
         return (values[0],values[1]) == (values[2],values[3])
     
-def desfazer():
-    if len(figuras) > 0:
-        figuras.pop()  # remove a última figura adicionada na lista [figuras]
+def desfazer():   # remove a última figura adicionada na lista figuras
+    if figuras:
+        figuras.pop() 
         desenhar_figuras()
+
+
 #/*/*/*/*/*/*/ MAIN /*/*/*/*/*/*/
 
 figuras = []       # Todas as figuras desenhadas
@@ -136,7 +140,7 @@ figura_nova = None # Figura que está sendo desenhada, mas ainda não foi inclu�
 root = Tk()
 frame = Frame(root)
 
-#dicionarios de cores e espessuras para os option menus
+#dicionarios de cores para os option menus
 cores = {
     "Sem preenchimento": None,
     "Preto": "black",
@@ -147,7 +151,10 @@ cores = {
     "Laranja": "orange",
     "Roxo": "purple"
 }
+
+
 espessuras = {
+    "Sem borda": None,
     "1": 1,
     "2": 2,
     "3": 3,
@@ -158,59 +165,71 @@ espessuras = {
 
 
 # Widgets arranjados com Layout grid dentro de frame
-paddings = {'padx': 5, 'pady': 5} 
+paddings = {'padx': 15, 'pady': 5} 
 
 
 frame2 = ttk.Frame(frame)#criei outro frame pra separar os textos do canvas, mas não é necessário, só pra organização visual mesmo.
-frame2.grid(column=0, row=0, sticky=N)
+frame2.grid(column=0, row=0, sticky = EW)
 
 #um botão para desfazer a última figura desenhada, que chama a função desfazer quando clica
-botao_desfazer = ttk.Button(frame2, text="Desfazer",command=desfazer)
+label_desfazer = ttk.Label(frame2, text = "Botão de desfazer:")
+label_desfazer.grid(column = 5,row = 0, sticky = W, **paddings)
 
-botao_desfazer.grid(column=0, row=8, sticky=W, **paddings)
+botao_desfazer = ttk.Button(frame2, text="Desfazer",command=desfazer)
+botao_desfazer.grid(column=5, row=1, sticky=W, **paddings)
 
 #option menu & Label das espessuras e das cores das espessuras
 cor_borda_var = StringVar(root)
 cor_borda_var.set("Preto")
 
 largura_borda_var = StringVar(root)
-largura_borda_var.set("2")
+largura_borda_var.set("Sem borda")
+
 
 #cor da borda
 label_cor_borda = ttk.Label(frame2, text="Cor da borda:")
-label_cor_borda.grid(column=0, row=4, sticky=W, **paddings)
-option_menu_cor_borda = ttk.OptionMenu( frame2,cor_borda_var, cor_borda_var.get(), *cores.keys())
-option_menu_cor_borda.grid(column=0, row=5, sticky=W, **paddings)
+label_cor_borda.grid(column=2, row=0, sticky=W, **paddings)
 
-#borda
+option_menu_cor_borda = ttk.OptionMenu( frame2,cor_borda_var, cor_borda_var.get(), *cores.keys())
+option_menu_cor_borda.grid(column=2, row=1, sticky=W, **paddings)
+
+
+#grossura da borda
 label_largura_borda = ttk.Label(frame2, text="Grossura da borda:")
-label_largura_borda.grid(column=0, row=6, sticky=W, **paddings)
+label_largura_borda.grid(column=3, row=0, sticky=W, **paddings)
+
 option_menu_largura = ttk.OptionMenu(frame2,largura_borda_var, largura_borda_var.get(),*espessuras.keys())
-option_menu_largura.grid(column=0, row=7, sticky=W, **paddings)
+option_menu_largura.grid(column=3, row=1, sticky=W, **paddings)
 
 
 # option menu & Label das cores
 cor_var = StringVar(root)
 cor_var.set("Sem preenchimento")
 
-option_menu_cor = ttk.OptionMenu( frame2,cor_var, cor_var.get(), *cores.keys())
-option_menu_cor.grid(column=0, row=3, sticky=W, **paddings)
-
 label_cor = ttk.Label(frame2, text = "Cor de preenchimento:")
-label_cor.grid(column = 0, row=2, sticky = W, **paddings)
+label_cor.grid(column = 1, row=0)
+
+option_menu_cor = ttk.OptionMenu( frame2,cor_var, cor_var.get(), *cores.keys())
+option_menu_cor.grid(column=1, row=1)
+
 
 
 # option menu  & Label das figuras
-tipo_figura_var = StringVar(root) # Guarda o tipo de figura selecionado no option menu (linha ou rabisco)
-option_menu = ttk.OptionMenu(frame2, tipo_figura_var,
-                            'Linha', 'Linha', 'Rabisco','Retângulo','Oval','Círculo')
-option_menu.grid( column=0, row=1, sticky=W, **paddings)
+tipo_figura_var = StringVar(root)
+tipo_figura_var.set("Linha") 
+
 label = ttk.Label(frame2,  text='Tipo da figura:')
 label.grid(column=0, row=0, sticky=W, **paddings)
 
+option_menu = ttk.OptionMenu(frame2, tipo_figura_var, tipo_figura_var.get(),
+                             'Linha', 'Rabisco','Retângulo','Oval','Círculo')
+option_menu.grid( column=0, row=1, sticky=W, **paddings)
+
+
+
 # Área de desenho
-canvas = Canvas(frame, bg='white', width=600, height=600)
-canvas.grid(column=1, row=0, sticky=NSEW, **paddings)
+canvas = Canvas(frame, bg='white', width=900, height=600)
+canvas.grid(column=0, row=1, sticky=NSEW, **paddings)
 
 frame.pack()
 
