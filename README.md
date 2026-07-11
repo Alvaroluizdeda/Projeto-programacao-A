@@ -16,10 +16,11 @@ Projeto desenvolvido para a disciplina de Programação A - UFS
 - ✅ Desenhar ovais
 - ✅ Desenhar círculos
 - ✅ Generalizar mais o código
-- ✅Desenhos individuais terem bordas com cor
+- ✅ Desenhos individuais terem bordas com cor
 - ✅ Desenhos individuais terem cor de preenchimento
 
 ### Funcionalidades da Entrega 1:
+
 - Desenhos de Linhas
 - Desenhos de Rabiscos
 - Desenhos de Retângulos
@@ -29,3 +30,11 @@ Projeto desenvolvido para a disciplina de Programação A - UFS
 - Seleção de Cor de Preenchimento para as Figuras
 - Seleção de Espessura de Borda
 - Botão de Desfazer Desenho Anterior
+
+##Objetivo 2
+
+- ✅ Definir uma hierarquia de classes para contemplar as diversas figuras
+- ⏳ Adequar o programa para utilizar a hierarquia da classe "Figuras" e implementar no código main
+- ✅ Adicionar desenho de polígonos
+- ✅ Separar o código em módulos
+
