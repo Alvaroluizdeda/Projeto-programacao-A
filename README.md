@@ -31,7 +31,7 @@ Projeto desenvolvido para a disciplina de Programação A - UFS
 - Seleção de Espessura de Borda
 - Botão de Desfazer Desenho Anterior
 
-##Objetivo 2
+## Objetivo 2
 
 - ✅ Definir uma hierarquia de classes para contemplar as diversas figuras
 - ⏳ Adequar o programa para utilizar a hierarquia da classe "Figuras" e implementar no código main
