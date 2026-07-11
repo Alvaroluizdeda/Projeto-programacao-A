@@ -26,6 +26,6 @@ Projeto desenvolvido para a disciplina de Programação A - UFS
 - Desenhos de Ovais
 - Desenhos de Círculos
 - Seleção de Cor para Bordas
-- Seleção de Preenchimento para as Figuras
+- Seleção de Cor de Preenchimento para as Figuras
 - Seleção de Espessura de Borda
 - Botão de Desfazer Desenho Anterior
