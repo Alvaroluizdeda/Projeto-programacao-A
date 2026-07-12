@@ -34,7 +34,7 @@ Projeto desenvolvido para a disciplina de Programação A - UFS
 ## Objetivo 2
 
 - ✅ Definir uma hierarquia de classes para contemplar as diversas figuras
-- ⏳ Adequar o programa para utilizar a hierarquia da classe "Figuras" e implementar no código main
+- ⏳ Adequar o programa para utilizar a hierarquia da classe "Figura" e implementar no código main
 - ✅ Adicionar desenho de polígonos
 - ✅ Separar o código em módulos
 

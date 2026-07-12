@@ -1,13 +1,15 @@
 from tkinter import *
 from tkinter import ttk
+from figuras import Linha, Rabisco, Retangulo, Oval, Circulo, Poligono
 
 # Quando mouse é pressionado
 def iniciar_figura_nova(event): 
     tipos = {                  #generaliza os tipos que possuem a mesma lógica
-        "Linha": "linha",      
-        "Retângulo": "retangulo",
-        "Oval": "oval",
-        "Círculo": "circulo"
+        "Linha": Linha,    
+        "Retângulo": Retangulo,
+        "Oval": Oval,
+        "Círculo": Circulo,
+        "Poligono": Poligono
     }      
 
     global figura_nova                         
@@ -18,114 +20,44 @@ def iniciar_figura_nova(event):
     largura = espessuras[largura_borda_var.get()]
 
     if tipo == "Rabisco":
-        figura_nova = ("rabisco",[(event.x,event.y,)], cor, cor_borda, largura) #rabisco é o único que precisa de uma lista de pontos, por isso o caso especial.
+        values = [(event.x,event.y)]
+        figura_nova = Rabisco(values,cor,cor_borda,largura)
 
     else:
-        figura_nova = (tipos[tipo], (event.x,event.y,event.x,event.y), cor, cor_borda, largura)
+        values = (event.x,event.y,event.x,event.y)
+        classe_figura = tipos[tipo]
+
+        figura_nova = classe_figura(values,cor,cor_borda,largura)
 
 # Quando mouse é movido com o botão pressionado
 def atualizar_figura_nova(event):
     global figura_nova
-    if figura_nova[0] == "rabisco":
-        figura_nova[1].append((event.x, event.y))
 
-    else : 
-        tipo = figura_nova[0]  #n fica mais fixo em linha, depende da figura dada na tupla agora.
-        cor = figura_nova[2]
-        cor_borda = figura_nova[3]
-        largura = figura_nova[4]
-        figura_nova = (tipo, (figura_nova[1][0], figura_nova[1][1], event.x, event.y), cor, cor_borda, largura)
+    figura_nova.atualizar(event.x,event.y)
 
     desenhar_figuras()
-    desenhar_figura_nova()
 
 # Quando mouse é solto
 def incluir_figura_nova(event): 
-    if not incompleta(figura_nova): # para evitar incluir figuras incompletas, como uma linha sem comprimento ou um rabisco com um único ponto
+    global figura_nova
+
+    if not figura_nova.incompleta(): # para evitar incluir figuras incompletas, como uma linha sem comprimento ou um rabisco com um único ponto
         figuras.append(figura_nova) 
+
+    figura_nova = None
     desenhar_figuras()
 
-def desenhar_figuras(): # generaliza os casos com lógica repetida
-    desenhos = {
-        "linha": canvas.create_line,
-        "retangulo": canvas.create_rectangle,
-        "oval": canvas.create_oval
-    }
 
-    canvas.delete("all")
+def desenhar_figuras(): 
+  canvas.delete("all")
 
-    for fig, values, cor, cor_borda, largura in figuras:
+  for figura in figuras:
+      figura.desenhar(canvas)
 
-        if fig == "rabisco":
-            canvas.create_line(*values, fill = cor,width= largura) #rabisco não pode ficar "sem preenchimento", igual à linha
-        
-        elif fig == "linha":
-            canvas.create_line(*values, fill = cor, width= largura) #linha não pode ficar "sem preenchimento", igual à rabisco
+  if figura_nova is not None:
+      figura_nova.desenhar(canvas, preview = True)
 
-        elif fig == "circulo":
-            novo_values = desenhar_circulo(values)
-            canvas.create_oval(*novo_values, fill=cor, outline= cor_borda, width=largura)
-
-        else:
-            desenhos[fig](*values,fill=cor,outline = cor_borda,width=largura)
-
-def desenhar_figura_nova(): #mesma lógica dos dicts anteriores, organização e generalização.
-    desenhos = {
-        "retangulo": canvas.create_rectangle,
-        "oval": canvas.create_oval
-    }
-    
-    fig, values, cor, cor_borda, largura = figura_nova
-     
-    if fig == "rabisco":
-        canvas.create_line(*values, dash = (4,2), fill = cor, width= largura)
-    
-    elif fig == "linha":
-        canvas.create_line(*values, dash = (4,2), fill = cor, width= largura)
-
-    elif fig == "circulo":
-        novo_values = desenhar_circulo(values)
-        canvas.create_oval(*novo_values, dash = (4,2), fill = cor, outline = cor_borda, width= largura)
-
-    else:
-        desenhos[fig](*values, dash = (4,2), fill=cor, outline = cor_borda, width = largura)
-
-      
-    
-def desenhar_circulo(values):  #caso especial do oval
-    x1 = values[0]
-    y1 = values[1]
-    x2 = values[2]
-    y2 = values[3]
-
-    lado = min(abs(x2 - x1), abs(y2 - y1))
-
-    if x2 < x1:
-        x2 = x1 - lado
-
-    else:
-        x2 = x1 + lado
-    
-
-    if y2 < y1:
-        y2 = y1 -lado
-
-    else:
-        y2 = y1 + lado
-    return (x1,y1,x2,y2)
-    
-
-def incompleta(figura):  #generalizei novamente, apenas deixando rabisco como caso especial.
-    if figura is None:
-        return True
-
-    fig, values, *_ = figura
-    if fig == "rabisco":
-        return len(values) <= 1
-    
-    else:
-        return (values[0],values[1]) == (values[2],values[3])
-    
+            
 def desfazer():   # remove a última figura adicionada na lista figuras
     if figuras:
         figuras.pop() 
