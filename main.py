@@ -13,7 +13,7 @@ def iniciar_figura_nova(event):
     cor_borda = cores[cor_borda_var.get()]
     largura = espessuras[largura_borda_var.get()]    
     
-    if tipo == "Poligono":
+    if tipo == "Polígono":
 
         if figura_nova is None:
             figura_nova = Poligono(
@@ -36,7 +36,7 @@ def iniciar_figura_nova(event):
         "Retângulo": Retangulo,
         "Oval": Oval,
         "Círculo": Circulo,
-        "Poligono": Poligono
+        "Polígono": Poligono
     }      
 
 
@@ -199,7 +199,7 @@ label = ttk.Label(frame2,  text='Tipo da figura:')
 label.grid(column=0, row=0, sticky=W, **paddings)
 
 option_menu = ttk.OptionMenu(frame2, tipo_figura_var, tipo_figura_var.get(),
-                             'Linha', 'Rabisco','Retângulo','Oval','Círculo', 'Poligono')
+                             'Linha', 'Rabisco','Retângulo','Oval','Círculo', 'Polígono')
 option_menu.grid( column=0, row=1, sticky=W, **paddings)
 
 

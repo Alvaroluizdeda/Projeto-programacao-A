@@ -22,6 +22,7 @@ class Figura:  # classe pai para ser o molde para as outras subclasses(figuras)
     def incompleta(self,):
         x1,y1,x2,y2 = self.values
         return (x1,y1) == (x2,y2)
+    
     def largura_borda(self):
         if self.largura is None:
             return 0
@@ -117,13 +118,11 @@ class Poligono(Figura):
     def desenhar(self, canvas, preview=False):
         dash = (4,2) if preview else None
 
-        if len(self.values) > 2:
-            canvas.create_polygon(
-                *self.values,
-                fill=self.cor_preenchimento(),
-                outline=self.cor_borda,
-                width=self.largura_borda(),
-                dash=dash)
+        if len(self.values) == 2:
+            canvas.create_line(*self.values, fill = self.cor_preenchimento(), width = self.largura_borda(), dash = dash)
+        
+        elif len(self.values) > 2:
+            canvas.create_polygon(*self.values, fill = self.cor_preenchimento(), outline = self.cor_borda, width = self.largura_borda(), dash = dash)
 
 
    

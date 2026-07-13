@@ -34,7 +34,14 @@ Projeto desenvolvido para a disciplina de Programação A - UFS
 ## Objetivo 2
 
 - ✅ Definir uma hierarquia de classes para contemplar as diversas figuras
-- ⏳ Adequar o programa para utilizar a hierarquia da classe "Figura" e implementar no código main
+- ✅ Adequar o programa para utilizar a hierarquia da classe "Figura" e implementar no código main
 - ✅ Adicionar desenho de polígonos
 - ✅ Separar o código em módulos
+
+### Como desenhar polígonos:
+- Selecione a opção **Polígono**.
+- Clique com o botão esquerdo para adicionar cada vértice.
+- Mova o mouse pra visualizar o próximo lado em tempo real.
+- Assim que chegar na figura desejada, clique com o botão direito para finalizar o polígono.
+
 
