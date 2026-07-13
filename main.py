@@ -4,6 +4,33 @@ from figuras import Linha, Rabisco, Retangulo, Oval, Circulo, Poligono
 
 # Quando mouse é pressionado
 def iniciar_figura_nova(event): 
+   
+    global figura_nova      
+           
+ 
+    tipo = tipo_figura_var.get()
+    cor = cores[cor_var.get()]
+    cor_borda = cores[cor_borda_var.get()]
+    largura = espessuras[largura_borda_var.get()]    
+    
+    if tipo == "Poligono":
+
+        if figura_nova is None:
+            figura_nova = Poligono(
+    [(event.x,event.y), (event.x,event.y)],
+    cor,
+    cor_borda,
+    largura
+)
+
+        else:
+            figura_nova.adicionar_ponto(event.x,event.y)
+
+
+        desenhar_figuras()
+        return
+    
+    
     tipos = {                  #generaliza os tipos que possuem a mesma lógica
         "Linha": Linha,    
         "Retângulo": Retangulo,
@@ -12,12 +39,8 @@ def iniciar_figura_nova(event):
         "Poligono": Poligono
     }      
 
-    global figura_nova                         
 
-    tipo = tipo_figura_var.get()
-    cor = cores[cor_var.get()]
-    cor_borda = cores[cor_borda_var.get()]
-    largura = espessuras[largura_borda_var.get()]
+
 
     if tipo == "Rabisco":
         values = [(event.x,event.y)]
@@ -33,7 +56,16 @@ def iniciar_figura_nova(event):
 def atualizar_figura_nova(event):
     global figura_nova
 
-    figura_nova.atualizar(event.x,event.y)
+    if figura_nova is None:
+        return
+
+
+    if isinstance(figura_nova, Poligono):
+        figura_nova.atualizar_preview(event.x,event.y)
+
+    else:
+        figura_nova.atualizar(event.x,event.y)
+
 
     desenhar_figuras()
 
@@ -41,12 +73,23 @@ def atualizar_figura_nova(event):
 def incluir_figura_nova(event): 
     global figura_nova
 
-    if not figura_nova.incompleta(): # para evitar incluir figuras incompletas, como uma linha sem comprimento ou um rabisco com um único ponto
-        figuras.append(figura_nova) 
+    if figura_nova is None:
+        return
+    if isinstance(figura_nova, Poligono):
+
+        if event.num != 3:
+            return
+
+        figura_nova.finalizar()
+    else:
+
+        if event.num != 1:
+            return
+    if not figura_nova.incompleta():
+        figuras.append(figura_nova)
 
     figura_nova = None
     desenhar_figuras()
-
 
 def desenhar_figuras(): 
   canvas.delete("all")
@@ -64,9 +107,11 @@ def desfazer():   # remove a última figura adicionada na lista figuras
         desenhar_figuras()
 
 
+
 #/*/*/*/*/*/*/ MAIN /*/*/*/*/*/*/
 
 figuras = []       # Todas as figuras desenhadas
+
 figura_nova = None # Figura que está sendo desenhada, mas ainda não foi incluída em figuras
 
 root = Tk()
@@ -154,7 +199,7 @@ label = ttk.Label(frame2,  text='Tipo da figura:')
 label.grid(column=0, row=0, sticky=W, **paddings)
 
 option_menu = ttk.OptionMenu(frame2, tipo_figura_var, tipo_figura_var.get(),
-                             'Linha', 'Rabisco','Retângulo','Oval','Círculo')
+                             'Linha', 'Rabisco','Retângulo','Oval','Círculo', 'Poligono')
 option_menu.grid( column=0, row=1, sticky=W, **paddings)
 
 
@@ -169,5 +214,6 @@ frame.pack()
 canvas.bind('<ButtonPress-1>', iniciar_figura_nova)
 canvas.bind('<B1-Motion>', atualizar_figura_nova)
 canvas.bind('<ButtonRelease-1>', incluir_figura_nova)
+canvas.bind("<Button-3>", incluir_figura_nova)
 
 root.mainloop()
