@@ -123,5 +123,4 @@ class Poligono(Figura):
                 fill=self.cor_preenchimento(),
                 outline=self.cor_borda,
                 width=self.largura_borda(),
-                dash=dash
-            )
+                dash=dash)
