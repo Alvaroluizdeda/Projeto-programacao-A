@@ -25,7 +25,7 @@ class Figura:  # classe pai para ser o molde para as outras subclasses(figuras)
     
     def largura_borda(self):
         if self.largura is None:
-            return 0
+            return 1
         return self.largura
 
   
@@ -36,7 +36,7 @@ class Linha(Figura):
     def desenhar(self, canvas, preview = False):
         dash = (4,2) if preview else None
 
-        canvas.create_line(*self.values, fill = self.cor_preenchimento(), width=self.largura_borda(), dash = dash)
+        canvas.create_line(*self.values, fill = self.cor_borda, width=self.largura if self.largura is not None else 1, dash = dash)
 
 class Rabisco(Figura): 
     def atualizar(self,x,y):
@@ -46,7 +46,7 @@ class Rabisco(Figura):
     def desenhar(self, canvas, preview = False):
         dash = (4,2) if preview else None
 
-        canvas.create_line(*self.values, fill = self.cor_preenchimento(), width=self.largura_borda(), dash = dash)
+        canvas.create_line(*self.values, fill = self.cor_borda, width=self.largura if self.largura is not None else 1, dash = dash)
 
 
     def incompleta(self):
