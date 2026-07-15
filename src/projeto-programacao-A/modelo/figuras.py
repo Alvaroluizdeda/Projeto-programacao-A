@@ -1,4 +1,7 @@
-class Figura:  # classe pai para ser o molde para as outras subclasses(figuras)
+from abc import ABC
+from abc import abstractmethod
+
+class Figura(ABC):  # classe pai abstrata para ser o molde para as outras subclasses(figuras)
     def __init__(self,values,cor,cor_borda,largura):
         self.cor = cor
         self.cor_borda = cor_borda
@@ -9,9 +12,9 @@ class Figura:  # classe pai para ser o molde para as outras subclasses(figuras)
         x1,y1,x2,y2 = self.values
         self.values = (x1,y1,x,y)
 
-
+    @abstractmethod
     def desenhar(self, canvas , preview = False):
-        raise NotImplementedError
+        pass
 
     def cor_preenchimento(self):
         if self.cor is None:
