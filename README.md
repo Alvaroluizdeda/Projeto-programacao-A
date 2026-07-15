@@ -44,4 +44,9 @@ Projeto desenvolvido para a disciplina de Programação A - UFS
 - Mova o mouse pra visualizar o próximo lado em tempo real.
 - Assim que chegar na figura desejada, clique com o botão direito para finalizar o polígono.
 
+## Objetivo 3
+- ✅ Definir as classes do modelo(Figura, Desenho e etc...).
+- ✅ Definir uma classe para visão.
+- ❌ Definir uma classe ou classes para os controladores.
+
 
