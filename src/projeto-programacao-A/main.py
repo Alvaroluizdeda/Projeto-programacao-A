@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-from figuras import Linha, Rabisco, Retangulo, Oval, Circulo, Poligono
+from modelo.figuras import Linha, Rabisco, Retangulo, Oval, Circulo, Poligono
 
 # Quando mouse é pressionado
 def iniciar_figura_nova(event): 
