@@ -49,7 +49,7 @@ class Rabisco(Figura):
     def desenhar(self, canvas, preview = False):
         dash = (4,2) if preview else None
 
-        canvas.create_line(*self.values, fill = self.cor_borda, width=self.largura if self.largura is not None else 1, dash = dash)
+        canvas.create_line(*self.values, fill = self.cor_borda,  width=self.largura if self.largura is not None else 1, dash = dash)
 
 
     def incompleta(self):
@@ -103,12 +103,12 @@ class Poligono(Figura):
 
 
     def adicionar_ponto(self, x, y):
-        self.values.append((x, y))
-
+       self.values.append((x,y))
 
     def atualizar_preview(self, x, y):
-        if not self.finalizado and len(self.values) > 0:
-            self.values[-1] = (x, y)
+        if not self.finalizado and len(self.values)> 0:
+            self.values[-1] = (x,y)
+       
 
 
     def finalizar(self):
@@ -121,11 +121,13 @@ class Poligono(Figura):
     def desenhar(self, canvas, preview=False):
         dash = (4,2) if preview else None
 
-        if len(self.values) == 2:
-            canvas.create_line(*self.values, fill = self.cor_preenchimento(), width = self.largura_borda(), dash = dash)
-        
-        elif len(self.values) > 2:
-            canvas.create_polygon(*self.values, fill = self.cor_preenchimento(), outline = self.cor_borda, width = self.largura_borda(), dash = dash)
+        outline = self.cor_borda
 
+        if self.cor is None and outline is None:
+            outline = "black"
+
+        canvas.create_polygon(*self.values, fill = self.cor_preenchimento(), outline = outline, width=self.largura if self.largura is not None else 1, dash = dash)
+
+            
 
    

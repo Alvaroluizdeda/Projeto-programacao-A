@@ -53,26 +53,34 @@ class Controlador:
 
         self.desenhar_figuras()
 
-    def incluir_figura_nova(self, event): 
+    def atualizar_preview_poligono(self, event):
+        if not isinstance(self.figura_nova, Poligono):
+           return 
+        
+        self.figura_nova.atualizar_preview(event.x,event.y)
 
-        if self.figura_nova is None:
+        self.desenhar_figuras()
+
+
+    def incluir_figura_nova(self, event): 
+         if self.figura_nova is None:
             return
-        if isinstance(self.figura_nova, Poligono):
+         if isinstance(self.figura_nova, Poligono):
 
             if event.num != 3:
                 return
 
             self.figura_nova.finalizar()
-        else:
+         else:
 
             if event.num != 1:
                 return
-        if not self.figura_nova.incompleta():
+         if not self.figura_nova.incompleta():
             self.desenho.adicionar(self.figura_nova)
 
-        self.figura_nova = None
-        self.desenhar_figuras()
-
+         self.figura_nova = None
+         self.desenhar_figuras()
+        
     def desenhar_figuras(self): 
         self.visao.canvas.delete("all")
 
