@@ -49,4 +49,15 @@ Projeto desenvolvido para a disciplina de Programação A - UFS
 - ✅ Definir uma classe para visão.
 - ✅ Definir uma classe ou classes para os controladores.
 
+### Aplicabilidades da Entrega 3:
 
+- CLASSE VISÃO (visao.py):
+   A classe Visão é responsável por gerenciar a interface. Ela cria os frames, cria as variáveis para serem usadas no OptionMenu e OptionMenu para cada funcionalidade;
+   Ademais, ela também cria o botão de desfazer, ainda sem o "command", aguardando o controlador.
+- CLASSE FIGURAS (figuras.py):
+  class Figura(ABC) é a Classe Pai abstrata para ser o molde para as outras subclasses;
+  SubClasses: São as classes de todas as outras figuras geométricas possíveis no programa advinda da classe pai.
+- CLASSE DESENHO (desenho.py):
+  A classe Desenho é responsável pelo desenho completo.
+- CLASSE CONTROLADOR (controlador.py):
+  A classe Controlador opera juntamente a outras classes e subclasses desempenhando funções de controle de figuras, desenhos, botões e afins.
