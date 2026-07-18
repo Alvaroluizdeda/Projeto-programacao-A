@@ -45,8 +45,16 @@ Projeto desenvolvido para a disciplina de Programação A - UFS
 - Assim que chegar na figura desejada, clique com o botão direito para finalizar o polígono.
 
 ## Objetivo 3
+
 - ✅ Definir as classes do modelo(Figura, Desenho e etc...).
 - ✅ Definir uma classe para visão.
 - ✅ Definir uma classe ou classes para os controladores.
+
+## Objetivo 4
+
+- ❌ Utilizar o padrão "State" para evitar código condicional nos métodos do controlador.
+- ⏳ Adicionar as funcionalidades de salvar e abrir.
+
+
 
 
