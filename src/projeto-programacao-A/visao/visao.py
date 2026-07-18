@@ -14,6 +14,7 @@ class Visao:
         self.criar_menu_largura()
         self.criar_canvas()
         self.criar_botao_desfazer()
+        self.criar_botao_salvar()
         self.frame.pack()
 
     #cria os frames.
@@ -120,6 +121,15 @@ class Visao:
 
         self.botao_desfazer = ttk.Button(self.frame2, text = "Desfazer")
         self.botao_desfazer.grid(column = 5, row = 1, sticky = W, padx = 15, pady = 5)
+
+    def criar_botao_salvar(self):
+        self.label_salvar = ttk.Label(self.frame2, text = "Botão de salvar: ")
+        self.label_salvar.grid(column = 6, row = 0, sticky = W, padx = 15, pady = 5)
+
+        self.botao_salvar = ttk.Button(self.frame2, text = "Salvar")
+        self.botao_salvar.grid(column = 6, row = 1, sticky = W, padx = 15, pady = 5)
+
+
 
 
 

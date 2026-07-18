@@ -1,4 +1,7 @@
 from modelo.figuras import (Linha,Rabisco,Retangulo,Oval,Circulo,Poligono)
+from tkinter import filedialog
+import json
+
 
 class Controlador:
 
@@ -14,6 +17,7 @@ class Controlador:
         self.visao.canvas.bind("<Button-3>", self.incluir_figura_nova)
 
         self.visao.botao_desfazer.config(command=self.desfazer)
+        self.visao.botao_salvar.config(command = self.salvar)
 
     def iniciar_figura_nova(self, event): 
       
@@ -90,7 +94,33 @@ class Controlador:
         if self.figura_nova is not None:
             self.figura_nova.desenhar(self.visao.canvas, preview = True)
 
-
+    ## Salva o desenho atual em um arquivo JSON(organizado pelo método), escolhido pelo usuário
     def desfazer(self):
         self.desenho.desfazer()
         self.desenhar_figuras()
+
+    def salvar(self):
+        caminho = filedialog.asksaveasfilename(defaultextension=".json",filetypes=[("Arquivos JSON", "*.json")])
+
+        if not caminho:
+            return
+        
+        figuras = []
+
+        for figura in self.desenho.figuras:
+            figuras.append({
+                "tipo": type(figura).__name__,
+                "values": figura.values,
+                "cor": figura.cor,
+                "cor_borda": figura.cor_borda,
+                "largura": figura.largura
+            })
+        
+        dados = {
+            "figuras": figuras
+        }
+
+       
+
+        with open(caminho, "w", encoding = "utf-8") as arquivo:
+         json.dump(dados, arquivo, indent = 4, ensure_ascii = False)
