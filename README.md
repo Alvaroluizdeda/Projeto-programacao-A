@@ -53,7 +53,7 @@ Projeto desenvolvido para a disciplina de Programação A - UFS
 ## Objetivo 4
 
 - ❌ Utilizar o padrão "State" para evitar código condicional nos métodos do controlador.
-- ⏳ Adicionar as funcionalidades de salvar e abrir.
+- ✅ Adicionar as funcionalidades de salvar e abrir.
 
 
 

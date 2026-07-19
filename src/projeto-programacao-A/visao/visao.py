@@ -15,6 +15,7 @@ class Visao:
         self.criar_canvas()
         self.criar_botao_desfazer()
         self.criar_botao_salvar()
+        self.criar_botao_abrir()
         self.frame.pack()
 
     #cria os frames.
@@ -123,13 +124,18 @@ class Visao:
         self.botao_desfazer.grid(column = 5, row = 1, sticky = W, padx = 15, pady = 5)
 
     def criar_botao_salvar(self):
-        self.label_salvar = ttk.Label(self.frame2, text = "Botão de salvar: ")
+        self.label_salvar = ttk.Label(self.frame2, text = "Botão para salvar desenho: ")
         self.label_salvar.grid(column = 6, row = 0, sticky = W, padx = 15, pady = 5)
 
         self.botao_salvar = ttk.Button(self.frame2, text = "Salvar")
         self.botao_salvar.grid(column = 6, row = 1, sticky = W, padx = 15, pady = 5)
 
+    def criar_botao_abrir(self):
+        self.label_abrir = ttk.Label(self.frame2, text = "Botão para abrir desenho: ")
+        self.label_abrir.grid(column = 7, row = 0, sticky = W, padx = 15, pady = 5)
 
+        self.botao_abrir = ttk.Button(self.frame2, text = "abrir")
+        self.botao_abrir.grid(column = 7, row = 1, sticky = W, padx = 15, pady = 5)
 
 
 

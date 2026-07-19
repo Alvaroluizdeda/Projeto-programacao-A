@@ -18,6 +18,7 @@ class Controlador:
 
         self.visao.botao_desfazer.config(command=self.desfazer)
         self.visao.botao_salvar.config(command = self.salvar)
+        self.visao.botao_abrir.config(command = self.abrir)
 
     def iniciar_figura_nova(self, event): 
       
@@ -124,3 +125,34 @@ class Controlador:
 
         with open(caminho, "w", encoding = "utf-8") as arquivo:
          json.dump(dados, arquivo, indent = 4, ensure_ascii = False)
+
+    def abrir(self):
+        caminho = filedialog.askopenfilename(filetypes=[("Arquivos JSON", "*.json")])
+
+        if not caminho:
+            return
+        
+        with open(caminho, "r", encoding = "utf-8") as arquivo:
+            dados = json.load(arquivo)
+
+        self.desenho.limpar()
+
+        tipos = {
+            "Linha": Linha,
+            "Rabisco": Rabisco,
+            "Retangulo": Retangulo,
+            "Oval": Oval,
+            "Circulo": Circulo,
+            "Poligono": Poligono
+        }
+
+        for figura in dados["figuras"]:
+            classe = tipos[figura["tipo"]]
+
+            nova_figura = classe(figura["values"], figura["cor"], figura["cor_borda"], figura["largura"])
+
+            self.desenho.adicionar(nova_figura)
+
+            self.desenhar_figuras()
+            
+        
