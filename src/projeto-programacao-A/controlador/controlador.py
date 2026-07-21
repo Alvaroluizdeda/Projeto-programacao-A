@@ -1,16 +1,26 @@
 from modelo.figuras import (Linha,Rabisco,Retangulo,Oval,Circulo,Poligono)
 from tkinter import filedialog
 import json
+from controlador.ferramentas import (FerramentaLinha,FerramentaRabisco,FerramentaRetangulo,FerramentaOval,FerramentaCirculo,FerramentaPoligono )
 
 
 class Controlador:
 
     def __init__(self, visao, desenho):
+        self.ferramentas = {
+            "Linha": FerramentaLinha(self),
+            "Rabisco": FerramentaRabisco(self),
+            "Retângulo": FerramentaRetangulo(self),
+            "Oval": FerramentaOval(self),
+            "Círculo": FerramentaCirculo(self),
+            "Polígono": FerramentaPoligono(self)
+
+        }
+
         self.visao = visao
         self.desenho = desenho       
         self.figura_nova = None
-        self.tipos = {"Linha": Linha,"Retângulo": Retangulo,"Oval": Oval,"Círculo": Circulo,}
-
+        
         self.visao.canvas.bind("<ButtonPress-1>", self.iniciar_figura_nova)
         self.visao.canvas.bind("<B1-Motion>", self.atualizar_figura_nova)
         self.visao.canvas.bind("<ButtonRelease-1>", self.incluir_figura_nova)
@@ -21,70 +31,18 @@ class Controlador:
         self.visao.botao_abrir.config(command = self.abrir)
 
     def iniciar_figura_nova(self, event): 
-      
         tipo = self.visao.tipo_figura_var.get()
-        cor = self.visao.cores_preenchimento[self.visao.cor_var.get()]
-        cor_borda = self.visao.cores_bordas[self.visao.cor_borda_var.get()]
-        largura = self.visao.larguras_borda[self.visao.largura_borda_var.get()]   
-        if tipo == "Polígono":
-            if self.figura_nova is None:
-                self.figura_nova = Poligono([(event.x,event.y), (event.x,event.y)],cor,cor_borda,largura)
-            else:
-                self.figura_nova.adicionar_ponto(event.x,event.y)
-            self.desenhar_figuras()
-            return
-
-        if tipo == "Rabisco":
-            values = [(event.x,event.y)]
-            self.figura_nova = Rabisco(values,cor,cor_borda,largura)
-        else:
-            values = (event.x,event.y,event.x,event.y)
-            classe_figura = self.tipos[tipo]
-
-            self.figura_nova = classe_figura(values,cor,cor_borda,largura)
-
-    def atualizar_figura_nova(self, event):
-
-        if self.figura_nova is None:
-            return
-
-
-        if isinstance(self.figura_nova, Poligono):
-            self.figura_nova.atualizar_preview(event.x,event.y)
-
-        else:
-            self.figura_nova.atualizar(event.x,event.y)
-
-
-        self.desenhar_figuras()
-
-    def atualizar_preview_poligono(self, event):
-        if not isinstance(self.figura_nova, Poligono):
-           return 
         
-        self.figura_nova.atualizar_preview(event.x,event.y)
+        self.ferramenta = self.ferramentas[tipo]
 
-        self.desenhar_figuras()
-
+        self.ferramenta.iniciar(event)
+        
+    def atualizar_figura_nova(self, event):
+        self.ferramenta.atualizar(event)
 
     def incluir_figura_nova(self, event): 
-         if self.figura_nova is None:
-            return
-         if isinstance(self.figura_nova, Poligono):
-
-            if event.num != 3:
-                return
-
-            self.figura_nova.finalizar()
-         else:
-
-            if event.num != 1:
-                return
-         if not self.figura_nova.incompleta():
-            self.desenho.adicionar(self.figura_nova)
-
-         self.figura_nova = None
-         self.desenhar_figuras()
+        self.ferramenta.finalizar(event)
+         
         
     def desenhar_figuras(self): 
         self.visao.canvas.delete("all")
@@ -95,11 +53,12 @@ class Controlador:
         if self.figura_nova is not None:
             self.figura_nova.desenhar(self.visao.canvas, preview = True)
 
-    ## Salva o desenho atual em um arquivo JSON(organizado pelo método), escolhido pelo usuário
+    
     def desfazer(self):
         self.desenho.desfazer()
         self.desenhar_figuras()
 
+    ## Salva o desenho atual em um arquivo JSON(organizado pelo método), escolhido pelo usuário
     def salvar(self):
         caminho = filedialog.asksaveasfilename(defaultextension=".json",filetypes=[("Arquivos JSON", "*.json")])
 
