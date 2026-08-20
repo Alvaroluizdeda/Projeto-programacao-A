@@ -4,12 +4,6 @@ Projeto desenvolvido para a disciplina de Programação A - UFS
 
 **Tipo de projeto:** Interface gráfica utilizando Tkinter
 
-## Integrantes
-
-- Álvaro Luiz Déda Corrêa Fernandes
-- Carlos Gustavo Moreira Fernandes Vieira
-- João Vítor Dias Rodrigues
-
 ## Objetivo 1
 
 - ✅ Desenhar retângulos
